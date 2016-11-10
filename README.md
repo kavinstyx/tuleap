@@ -10,7 +10,7 @@ docker run --detach --name tuleap \
 
 ## Recover admin password
 ```sh
-docker exec tuleap /bin/bash -c "cat /root/todo_tuleap.txt"
+docker exec tuleap /bin/bash -c "cat /root/.tuleap_passwd"
 ```
 
 ## Show logs
