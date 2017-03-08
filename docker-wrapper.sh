@@ -6,6 +6,7 @@ if [[ ! -e /etc/tuleap/conf/local.inc ]]; then
 	#yum install -y system-config-firewall-base && yum clean all
 	#lokkit -s https -s http -s ssh
 else
+	/usr/lib/forgeupgrade/bin/forgeupgrade --config=/etc/tuleap/forgeupgrade/config.ini update
 	#/sbin/service xinetd restart
 	/sbin/service vsftpd restart
 	#/sbin/service named restart

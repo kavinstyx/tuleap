@@ -4,7 +4,7 @@
 ```sh
 docker run --detach --name tuleap \
   -p 80:80 -p 443:443 \
-  --env DEFAULT_DOMAIN=localhost \
+  --env DEFAULT_DOMAIN=127.0.0.1 \
   jariasl/tuleap
 ```
 
@@ -17,8 +17,7 @@ docker exec tuleap /bin/bash -c "cat /root/.tuleap_passwd"
 ```sh
 docker run --detach --name tuleap \
   -p 80:80 -p 443:443 \
-  --env DEFAULT_DOMAIN=localhost \
-  -v tuleap-conf-httpd:/etc/httpd \
+  --env DEFAULT_DOMAIN=127.0.0.1 \
   -v tuleap-conf-tuleap:/etc/tuleap \
   -v tuleap-data-root:/root \
   -v tuleap-data-home:/home \
@@ -33,8 +32,7 @@ OR
 ```sh
 docker run --detach --name tuleap \
   -p 80:80 -p 443:443 \
-  --env DEFAULT_DOMAIN=localhost \
-  -v tuleap-conf:/etc/httpd \
+  --env DEFAULT_DOMAIN=127.0.0.1 \
   -v tuleap-conf:/etc/tuleap \
   -v tuleap-data:/root \
   -v tuleap-data:/home \
