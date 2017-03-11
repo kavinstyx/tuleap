@@ -16,6 +16,6 @@ COPY docker-wrapper.sh /sbin/docker-wrapper.sh
 
 RUN chmod 755 /sbin/docker-wrapper.sh
 
-VOLUME ["/etc/tuleap", "/root", "/home", "/var/lib/mailman", "/var/lib/mysql", "/var/lib/tuleap"]
+VOLUME ["/etc/tuleap", "/root", "/home", "/var/lib/tuleap", "/var/lib/gitolite", "/var/lib/mailman", "/var/lib/mysql"]
 
 CMD ["/sbin/docker-wrapper.sh"]
