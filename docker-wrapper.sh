@@ -19,7 +19,7 @@ function move-data-dirs {
         mv /var/lib/gitolite /data/var/lib/
         mv /var/lib/mailman /data/var/lib/
         mv /var/lib/mysql /data/var/lib/
-        mv /root /data/root && chmod 700 /data/
+        mv /root /data/ && chmod 700 /data/root
 }
 
 function create-data-symlinks {
