@@ -56,9 +56,9 @@ if [[ ! -e /etc/tuleap/conf/local.inc ]]; then
 	else
 		remove-data-dirs
 	fi
+	create-data-symlinks
+	/usr/lib/forgeupgrade/bin/forgeupgrade --config=/etc/tuleap/forgeupgrade/config.ini update # Update
 fi
-create-data-symlinks
-/usr/lib/forgeupgrade/bin/forgeupgrade --config=/etc/tuleap/forgeupgrade/config.ini update # Update
 #/sbin/service xinetd restart
 /sbin/service vsftpd restart
 #/sbin/service named restart
