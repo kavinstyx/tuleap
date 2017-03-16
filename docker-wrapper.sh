@@ -12,14 +12,14 @@ function create-data-dirs {
 }
 
 function move-data-dirs {
-        mv /etc/tuleap /data/etc/
-        mv /etc/ssh /data/
-        mv /home /data/
-        mv /var/lib/tuleap /data/var/lib/
-        mv /var/lib/gitolite /data/var/lib/
-        mv /var/lib/mailman /data/var/lib/
-        mv /var/lib/mysql /data/var/lib/
-        mv /root /data/ && chmod 700 /data/root
+        mv /etc/tuleap/* /data/etc/tuleap/
+        mv /etc/ssh/* /data/ssh/
+        mv /home/* /data/home/
+        mv /var/lib/tuleap/* /data/var/lib/tuleap/
+        mv /var/lib/gitolite/* /data/var/lib/gitolite/
+        mv /var/lib/mailman/* /data/var/lib/mailman/
+        mv /var/lib/mysql/* /data/var/lib/mysql/
+        mv /root/* /data/root/ && chmod 700 /data/root
 }
 
 function create-data-symlinks {
@@ -53,9 +53,8 @@ if [[ ! -e /etc/tuleap/conf/local.inc ]]; then
 	if [[ ! -e /data/etc/tuleap/conf/local.inc ]]; then
 		create-data-dirs
 	        move-data-dirs
-	else
-		remove-data-dirs
 	fi
+	remove-data-dirs
 	create-data-symlinks
 	/usr/lib/forgeupgrade/bin/forgeupgrade --config=/etc/tuleap/forgeupgrade/config.ini update # Update
 fi
