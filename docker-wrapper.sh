@@ -2,12 +2,16 @@
 
 set -e
 
+echo " Starting Tuleap container initialization..."
+
+# Create persistent data directories
 function create-data-dirs {
     mkdir -p /data/etc/tuleap /data/etc/ssh /data/home \
              /data/var/lib/tuleap /data/var/lib/gitolite \
              /data/var/lib/mailman /data/var/lib/mysql /data/root
 }
 
+# Move initial data into /data volume
 function move-data-dirs {
     [[ -d /etc/tuleap ]] && mv /etc/tuleap /data/etc/
     [[ -d /etc/ssh ]] && mv /etc/ssh /data/etc/
@@ -19,6 +23,7 @@ function move-data-dirs {
     [[ -d /root ]] && mv /root /data/ && chmod 700 /data/root
 }
 
+# Create symbolic links to the data volume
 function create-data-symlinks {
     ln -sf /data/etc/tuleap /etc/tuleap
     ln -sf /data/etc/ssh /etc/ssh
@@ -30,41 +35,34 @@ function create-data-symlinks {
     ln -sf /data/root /root
 }
 
-# Initial Tuleap configuration
-if [[ ! -e /etc/tuleap/conf/local.inc ]]; then
-    echo "Running Tuleap setup..."
-    /usr/share/tuleap-install/setup.sh --disable-domain-name-check \
-        --sys-default-domain="${DEFAULT_DOMAIN}" \
-        --sys-org-name="${ORG_NAME}" \
-        --sys-long-org-name="${ORG_NAME}"
-
-    # Stop services if running (kill instead of systemctl)
-    pkill httpd || true
-    pkill mariadbd || true
-
-    if [[ ! -e /data/etc/tuleap/conf/local.inc ]]; then
-        create-data-dirs
-        move-data-dirs
-    fi
-
+# First-time volume setup
+if [[ ! -e /data/etc/tuleap/conf/local.inc ]]; then
+    echo " First time setup: initializing /data volume..."
+    create-data-dirs
+    move-data-dirs
     create-data-symlinks
-
-    # Run Tuleap database migrations
-    /usr/lib/forgeupgrade/bin/forgeupgrade --config=/etc/tuleap/forgeupgrade/config.ini update
+else
+    echo " Existing Tuleap configuration found."
+    create-data-symlinks
 fi
 
-# Start PHP FPM (Remi path)
+# Start PHP FPM (Remi SCL path)
 /opt/remi/php82/root/usr/sbin/php-fpm &
+echo " PHP-FPM started."
 
 # Start MariaDB (non-systemd)
-/usr/libexec/mariadbd --basedir=/usr &
+/usr/libexec/mariadbd --basedir=/usr --datadir=/var/lib/mysql &
+echo " MariaDB started."
 
 # Start Mailman
 /usr/lib/mailman/bin/mailmanctl start
+echo " Mailman started."
 
-# Start rsyslog and cron
+# Start cron and rsyslog
 rsyslogd
 crond
+echo " rsyslog and cron started."
 
 # Start Apache in foreground
-/usr/sbin/httpd -DFOREGROUND
+echo " Starting Apache (Tuleap Web UI)..."
+exec /usr/sbin/httpd -DFOREGROUND
