@@ -1,9 +1,5 @@
 FROM quay.io/centos/centos:stream8
 
-# Set DNS inside the container manually (temporary fix)
-#RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf && \
-#echo "nameserver 8.8.4.4" >> /etc/resolv.conf
-
 # Replace CentOS repos with vault.centos.org
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo && \
     sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo
@@ -16,14 +12,12 @@ LABEL maintainer="Gihan gihankavin50@gmail.com" \
 RUN dnf install -y dnf-plugins-core
 RUN dnf config-manager --set-enabled powertools
 
-# Install EPEL and Tuleap repositories
-RUN dnf install -y epel-release
+# Install EPEL repository (for CentOS Stream 8)
+RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 
-# Test connectivity before installing Tuleap repo
-RUN curl -v https://rpm.tuleap.org/rpm/tuleap-release-latest.noarch.rpm || echo "Warning: Could not reach rpm.tuleap.org"
-
-# Install Tuleap repository
-RUN dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+# Install Tuleap repository using local file
+COPY tuleap-release-latest.noarch.rpm /tmp/tuleap-release-latest.noarch.rpm
+RUN dnf install -y /tmp/tuleap-release-latest.noarch.rpm
 
 # Install Tuleap with all required plugins
 RUN dnf install -y tuleap-all \
