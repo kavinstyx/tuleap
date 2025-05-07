@@ -1,4 +1,4 @@
-FROM centos:stream8
+FROM quay.io/centos/centos:stream8
 
 LABEL maintainer="Gihan gihankavin50@gmail.com" \
       description="Tuleap with Git, Wiki, and Docman plugins" \
