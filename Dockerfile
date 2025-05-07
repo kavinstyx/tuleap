@@ -1,9 +1,13 @@
 FROM quay.io/centos/centos:stream8
 
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo && \
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo
+
 LABEL maintainer="Gihan gihankavin50@gmail.com" \
       description="Tuleap with Git, Wiki, and Docman plugins" \
       version="1.0"
 
+      
 # Enable PowerTools repository which is required for some dependencies
 RUN dnf install -y dnf-plugins-core
 RUN dnf config-manager --set-enabled powertools
