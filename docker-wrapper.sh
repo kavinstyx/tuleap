@@ -75,7 +75,7 @@ if [[ ! -e /etc/tuleap/conf/local.inc ]]; then
 fi
 
 # Start required services
-systemctl start rsyslog
+#systemctl start rsyslog
 systemctl start sshd
 systemctl start mariadb
 systemctl start httpd
@@ -83,7 +83,7 @@ systemctl start crond
 systemctl start mailman
 
 # Enable services to start on boot
-systemctl enable rsyslog
+#systemctl enable rsyslog
 systemctl enable sshd
 systemctl enable mariadb
 systemctl enable httpd
