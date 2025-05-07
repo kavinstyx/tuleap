@@ -37,6 +37,7 @@ RUN echo "[tuleap-dev]" > /etc/yum.repos.d/tuleap-dev.repo && \
 # Install Tuleap core and selected plugins
 RUN dnf install -y \
     tuleap \
+    mariadb-server mariadb \
     tuleap-plugin-git \
     tuleap-gitolite3 \
     tuleap-plugin-docman \
