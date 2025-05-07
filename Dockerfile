@@ -2,7 +2,7 @@ FROM quay.io/centos/centos:stream8
 
 # Set DNS inside the container manually (temporary fix)
 #RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf && \
-    #echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+#echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 
 # Replace CentOS repos with vault.centos.org
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo && \
@@ -23,7 +23,7 @@ RUN dnf install -y epel-release
 RUN curl -v https://rpm.tuleap.org/rpm/tuleap-release-latest.noarch.rpm || echo "Warning: Could not reach rpm.tuleap.org"
 
 # Install Tuleap repository
-RUN dnf install -y https://rpm.tuleap.org/rpm/tuleap-release-latest.noarch.rpm
+RUN dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 
 # Install Tuleap with all required plugins
 RUN dnf install -y tuleap-all \
