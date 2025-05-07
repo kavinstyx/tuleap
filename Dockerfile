@@ -14,6 +14,19 @@ RUN dnf install -y dnf-plugins-core && \
     dnf config-manager --set-enabled crb && \
     dnf install -y epel-release
 
+# Add Remi repo
+RUN dnf install -y https://rpms.remirepo.net/enterprise/remi-release-9.rpm && \
+    dnf module reset php -y && \
+    dnf module enable php:remi-8.2 -y
+
+# Install PHP 8.2 SCL packages explicitly
+RUN dnf install -y \
+    php82 php82-php php82-php-fpm php82-php-mysql \
+    php82-php-gd php82-php-intl php82-php-mbstring php82-php-opcache \
+    php82-php-process php82-php-sodium php82-php-xml php82-php-common \
+    php82-php-ffi php82-php-pecl-redis5 php82-php-pecl-zip
+
+
 # Add Tuleap Dev repo manually
 RUN echo "[tuleap-dev]" > /etc/yum.repos.d/tuleap-dev.repo && \
     echo "name=Tuleap Dev Repository" >> /etc/yum.repos.d/tuleap-dev.repo && \
