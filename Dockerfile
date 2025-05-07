@@ -1,8 +1,8 @@
 FROM quay.io/centos/centos:stream8
 
 # Set DNS inside the container manually (temporary fix)
-RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf && \
-    echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+#RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf && \
+    #echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 
 # Replace CentOS repos with vault.centos.org
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo && \
