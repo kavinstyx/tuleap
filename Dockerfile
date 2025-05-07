@@ -29,15 +29,14 @@ RUN dnf install -y \
     tuleap-plugin-docman \
     tuleap-plugin-cardwall \
     tuleap-plugin-agiledashboard \
-    tuleap-plugin-taskboard \
     tuleap-plugin-hudson \
     tuleap-plugin-hudson-git \
     tuleap-plugin-tracker \
     tuleap-plugin-tracker-encryption \
-    tuleap-plugin-tracker-permissions \
     tuleap-theme-burningparrot \
     rsyslog cronie openssh-server && \
     dnf clean all
+
 
 # Copy wrapper script and set permissions
 COPY docker-wrapper.sh /sbin/docker-wrapper.sh
